@@ -1,5 +1,12 @@
 import json
 import pandas as pd
+from enum import Enum
+
+
+class Interval(Enum):
+    HOUR = "HOUR",
+    DOW = "DOW",
+    DOW_HOURLY = "DOW_HOURLY"
 
 
 def calculate(data, interval):
@@ -25,19 +32,19 @@ def calculate(data, interval):
 
     new_df = data.drop(columns=['RunningTaskCount', 'MemoryReserved'])
 
-    if interval.toUpperCase() == 'HOUR':
+    if interval.toUpperCase() == Interval.HOUR:
 
         new_df['Hour'] = new_df['Timestamps'].apply(lambda x: x.hour)
         final_df = new_df.groupby(['Hour'])['MemoryUtilized'].mean().reset_index()
         return final_df
 
-    elif interval.toUpperCase() == 'DOW':
+    elif interval.toUpperCase() == Interval.DOW:
 
         new_df['DOW'] = new_df['Timestamps'].apply(lambda x: x.dayofweek)
         final_df = new_df.groupby(['DOW'])['MemoryUtilized'].mean().reset_index()
         return final_df
 
-    elif interval.toUpperCase() == 'DOW_HOURLY':
+    elif interval.toUpperCase() == Interval.DOW_HOURLY:
 
         new_df['Hour'] = new_df['Timestamps'].apply(lambda x: x.hour)
         new_df['DOW'] = new_df['Timestamps'].apply(lambda x: x.dayofweek)
@@ -46,4 +53,4 @@ def calculate(data, interval):
 
     else:
         print("Not a valid interval. Please use: HOUR, DOW, or DOW_HOURLY")
-        return
+        return None
