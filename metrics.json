@@ -1,0 +1,75 @@
+{
+    "MetricDataQueries": [
+        {
+            "Id": "a",
+            "MetricStat": {
+                "Metric": {
+                    "Namespace": "ECS/ContainerInsights",
+                    "MetricName": "RunningTaskCount",
+                    "Dimensions": [
+                        {
+                            "Name": "ServiceName",
+                            "Value": "service-administrative"
+                        },
+                        {
+                            "Name": "ClusterName",
+                            "Value": "prd"
+                        }
+                    ]
+                },
+                "Period": 3600,
+                "Stat": "Maximum",
+                "Unit": "Count"
+            },
+            "ReturnData": true
+        },
+        {
+            "Id": "b",
+            "MetricStat": {
+                "Metric": {
+                    "Namespace": "ECS/ContainerInsights",
+                    "MetricName": "MemoryReserved",
+                    "Dimensions": [
+                        {
+                            "Name": "TaskDefinitionFamily",
+                            "Value": "prd-service-administrative"
+                        },
+                        {
+                            "Name": "ClusterName",
+                            "Value": "prd"
+                        }
+                    ]
+                },
+                "Period": 3600,
+                "Stat": "Maximum",
+                "Unit": "Megabytes"
+            },
+            "ReturnData": true
+        },
+        {
+            "Id": "c",
+            "MetricStat": {
+                "Metric": {
+                    "Namespace": "ECS/ContainerInsights",
+                    "MetricName": "MemoryUtilized",
+                    "Dimensions": [
+                        {
+                            "Name": "TaskDefinitionFamily",
+                            "Value": "prd-service-administrative"
+                        },
+                        {
+                            "Name": "ClusterName",
+                            "Value": "prd"
+                        }
+                    ]
+                },
+                "Period": 3600,
+                "Stat": "Maximum",
+                "Unit": "Megabytes"
+            },
+            "ReturnData": true
+        }
+    ],
+    "StartTime": "2019-10-01T00:00:00Z",
+    "EndTime": "2020-01-01T00:00:00Z"
+}
