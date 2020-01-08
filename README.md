@@ -14,6 +14,11 @@ See data.json
 
     aws cloudwatch get-metric-data --cli-input-json file://metrics.json > data.json
 
+## start.sh
+
+sh start.sh data interval
+Starts the python script. Prints values to console and creates a .csv file in relative directory.
+
 ## RoadMap
 
 - Update `metricDataResultsToDailyView` to return recommendation: (MAX of []hours / .8)
