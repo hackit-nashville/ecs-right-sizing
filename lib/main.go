@@ -113,7 +113,7 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		StartTime: aws.Time(time.Now().AddDate(0, 0, -14)),
 	}
 
-	for input.NextToken == nil {
+	for {
 		output, err := cloudwatchService.GetMetricData(input)
 
 		if err != nil {
@@ -123,6 +123,9 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		log.Println(output)
 
 		input.NextToken = output.NextToken
+		if input.NextToken == nil {
+			break
+		}
 	}
 
 	return 1
