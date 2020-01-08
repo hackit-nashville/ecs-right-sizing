@@ -61,3 +61,6 @@ def calculate(data, interval):
     else:
         print("Not a valid interval. Please use: HOUR, DOW, or DOW_HOURLY")
         return
+
+if __name__ == '__main__':
+    calculate(*sys.argv[1:])
