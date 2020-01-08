@@ -3,9 +3,15 @@
 ## Getting Started
 
 You need to turn on [CloudWatch Container Insights](https://console.aws.amazon.com/ecs/home?region=us-east-1#/settings)
+
 ## Data
 
 See data.json
 
     aws cloudwatch get-metric-data --cli-input-json file://metrics.json > data.json
 
+## RoadMap
+
+- Update `metricDataResultsToDailyView` to return recommendation: (MAX of []hours / .8)
+- Accept a parameter to recommend by weekday or daily
+- Write an option to iterate over all services in ECS and make a recommendation/report for each service
