@@ -30,60 +30,6 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		EndTime: aws.Time(time.Now()),
 		MetricDataQueries: []*cloudwatch.MetricDataQuery{
 			&cloudwatch.MetricDataQuery{
-				Id: aws.String("taskcount"),
-				MetricStat: &cloudwatch.MetricStat{
-					Metric: &cloudwatch.Metric{
-
-						// The name of the metric.
-						MetricName: aws.String("RunningTaskCount"),
-
-						// The namespace of the metric.
-						Namespace: aws.String("ECS/ContainerInsights"),
-
-						// The dimensions for the metric.
-						Dimensions: []*cloudwatch.Dimension{
-							&cloudwatch.Dimension{
-								Name:  aws.String("ServiceName"),
-								Value: &serviceName,
-							},
-							&cloudwatch.Dimension{
-								Name:  aws.String("ClusterName"),
-								Value: &clusterName,
-							},
-						},
-					},
-					Period: aws.Int64(3600),
-					Stat:   aws.String("Maximum"),
-					Unit:   aws.String("Count"),
-				},
-			},
-			&cloudwatch.MetricDataQuery{
-				Id: aws.String("reserved"),
-				MetricStat: &cloudwatch.MetricStat{
-					Metric: &cloudwatch.Metric{
-						// The name of the metric.
-
-						// The namespace of the metric.
-						Namespace:  aws.String("ECS/ContainerInsights"),
-						MetricName: aws.String("MemoryReserved"),
-						// The dimensions for the metric.
-						Dimensions: []*cloudwatch.Dimension{
-							&cloudwatch.Dimension{
-								Name:  aws.String("TaskDefinitionFamily"),
-								Value: aws.String(clusterName + "-" + serviceName),
-							},
-							&cloudwatch.Dimension{
-								Name:  aws.String("ClusterName"),
-								Value: &clusterName,
-							},
-						},
-					},
-					Period: aws.Int64(3600),
-					Stat:   aws.String("Maximum"),
-					Unit:   aws.String("Megabytes"),
-				},
-			},
-			&cloudwatch.MetricDataQuery{
 				Id: aws.String("utilized"),
 				MetricStat: &cloudwatch.MetricStat{
 					Metric: &cloudwatch.Metric{
@@ -110,8 +56,10 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 				},
 			},
 		},
-		StartTime: aws.Time(time.Now().AddDate(0, 0, -14)),
+		StartTime: aws.Time(time.Now().AddDate(0, 0, -90)),
 	}
+
+	var results []*float64
 
 	for {
 		output, err := cloudwatchService.GetMetricData(input)
@@ -120,7 +68,11 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 			log.Println(err)
 		}
 
-		log.Println(output)
+		for _, metricDataResult := range output.MetricDataResults {
+			if *metricDataResult.Id == "utilized" {
+				results = append(results, metricDataResult.Values...)
+			}
+		}
 
 		input.NextToken = output.NextToken
 		if input.NextToken == nil {
@@ -128,5 +80,24 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		}
 	}
 
+	metricDataResultsToDailyView(results)
+
 	return 1
+}
+
+func metricDataResultsToDailyView(results []*float64) {
+	var hours [24]float64
+	var hour = 0
+	for _, result := range results {
+		hours[hour] = hours[hour] + *result
+		hour = hour + 1
+		if hour == 24 {
+			hour = 0
+		}
+	}
+	fmt.Println(hours)
+	for hour, hours := range hours {
+		fmt.Printf("Hour: %d\tTotal: %f\n", hour, hours/(float64(len(results))/24))
+	}
+
 }

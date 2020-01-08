@@ -11,7 +11,7 @@ var helloCmd = &cobra.Command{
 	Use:   "hello",
 	Short: "Say hello",
 	Run: func(cmd *cobra.Command, args []string) {
-		lib.EstimateReservation("model-service", "dev")
+		lib.EstimateReservation("file-monitor", "prd")
 	},
 }
 
