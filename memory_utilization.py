@@ -47,7 +47,7 @@ def calculate(data, interval):
 
         new_df['Hour'] = new_df['Timestamps'].apply(lambda x: x.hour)
         new_df['DOW'] = new_df['Timestamps'].apply(lambda x: x.dayofweek)
-        final_df = new_df.groupby(['DOW', ' Hour'])['MemoryUtilized'].mean().reset_index()
+        final_df = new_df.groupby(['DOW', 'Hour'])['MemoryUtilized'].mean().reset_index()
         final_df.to_csv(path_or_buf='dow_hourly.csv', sep=',', index=False)
         with pd.option_context('display.max_rows', None, 'display.max_columns', None):
             print(final_df)
