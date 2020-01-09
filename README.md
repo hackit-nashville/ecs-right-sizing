@@ -3,9 +3,10 @@
 ## Getting Started
 
 You need to turn on [CloudWatch Container Insights](https://console.aws.amazon.com/ecs/home?region=us-east-1#/settings).
+You can enable it with the command below:
 
     aws ecs update-cluster-settings \
-        --cluster ops \    
+        --cluster default \    
         --settings name=containerInsights,value=enabled
 
 ## Data

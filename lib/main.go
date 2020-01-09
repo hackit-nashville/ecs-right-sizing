@@ -80,24 +80,5 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		}
 	}
 
-	metricDataResultsToDailyView(results)
-
-	return 1
-}
-
-func metricDataResultsToDailyView(results []*float64) {
-	var hours [24]float64
-	var hour = 0
-	for _, result := range results {
-		hours[hour] = hours[hour] + *result
-		hour = hour + 1
-		if hour == 24 {
-			hour = 0
-		}
-	}
-	fmt.Println(hours)
-	for hour, hours := range hours {
-		fmt.Printf("Hour: %d\tTotal: %f\n", hour, hours/(float64(len(results))/24))
-	}
-
+	return calculateReservation(results)
 }
