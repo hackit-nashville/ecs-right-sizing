@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -68,8 +67,6 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 				for i, value := range metricDataResult.Values {
 					results = append(results, memoryUtilizationPoint{metricDataResult.Timestamps[i], value})
 				}
-				// results = append(results, {metricDataResult.Values...)
-
 			}
 		}
 
@@ -79,9 +76,9 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		}
 	}
 
-	for _, mu := range results {
-		fmt.Println(mu.toString())
-	}
+	// for _, mu := range results {
+	// 	fmt.Println(mu.toString())
+	// }
 
-	return 0.0
+	return calculateReservation(results)
 }
