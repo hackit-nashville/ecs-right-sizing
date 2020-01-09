@@ -8,11 +8,7 @@ func calculateReservation(results []*float64) int64 {
 	var hours [24]float64
 	var hour = 0
 
-	resultsLength := len(results)
-	if resultsLength < 24 {
-		resultsLength = 24
-	}
-	if resultsLength%24 != 0 {
+	if len(results)%24 != 0 {
 		panic("Invalid number of data points. Must be intervals of 24")
 	}
 
@@ -25,7 +21,7 @@ func calculateReservation(results []*float64) int64 {
 	}
 
 	for hour, value := range hours {
-		hours[hour] = value / (float64(resultsLength) / 24)
+		hours[hour] = value / (float64(len(results)) / 24)
 	}
 
 	max := Max(hours)
