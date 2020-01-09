@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -53,7 +54,7 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		StartTime: aws.Time(time.Now().AddDate(0, 0, -90)),
 	}
 
-	var results []*float64
+	results := []memoryUtilizationPoint{}
 
 	for {
 		output, err := cloudwatchService.GetMetricData(input)
@@ -64,7 +65,11 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 
 		for _, metricDataResult := range output.MetricDataResults {
 			if *metricDataResult.Id == "utilized" {
-				results = append(results, metricDataResult.Values...)
+				for i, value := range metricDataResult.Values {
+					results = append(results, memoryUtilizationPoint{metricDataResult.Timestamps[i], value})
+				}
+				// results = append(results, {metricDataResult.Values...)
+
 			}
 		}
 
@@ -74,5 +79,9 @@ func EstimateReservation(serviceName, clusterName string) (reservation int64) {
 		}
 	}
 
-	return calculateReservation(results)
+	for _, mu := range results {
+		fmt.Println(mu.toString())
+	}
+
+	return 0.0
 }
