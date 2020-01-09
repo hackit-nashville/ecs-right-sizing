@@ -21,7 +21,6 @@ func calculateReservation(mups []memoryUtilizationPoint) int64 {
 	return int64(math.Round(max / .8))
 }
 
-// Max returns themaximum value of a slice with 24 datapoints
 func Max(array []float64) float64 {
 	var max float64
 	for _, value := range array {
@@ -32,7 +31,6 @@ func Max(array []float64) float64 {
 	return max
 }
 
-// Max returns themaximum value of a slice with 24 datapoints
 func Average(array []float64) float64 {
 	sum := 0.0
 	for _, value := range array {
