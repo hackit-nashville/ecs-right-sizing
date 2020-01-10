@@ -17,13 +17,26 @@ var recommendCmd = &cobra.Command{
 	Use:   "recommend-memory-reservation",
 	Short: "Recommend accepts a service name and cluster then produces a recommended memory reservation",
 	Run: func(cmd *cobra.Command, args []string) {
-		reservation := lib.EstimateReservation(serviceName, clusterName)
-		if clean {
-			fmt.Println(reservation)
+		if len(serviceName) > 0 && len(clusterName) > 0 {
+			reservation := lib.EstimateReservation(serviceName, clusterName)
+			if clean {
+				fmt.Println(reservation)
+			} else {
+				printRecommendation(serviceName, clusterName, reservation)
+			}
+		} else if len(clusterName) > 0 {
+			for _, serviceName := range lib.GetServices(clusterName) {
+				reservation := lib.EstimateReservation(serviceName, clusterName)
+				printRecommendation(serviceName, clusterName, reservation)
+			}
 		} else {
-			fmt.Printf("Service: %s, Cluster: %s, Recommended Memory Reservation: %d\n", serviceName, clusterName, reservation)
+			fmt.Println("missing required arg '--cluster'")
 		}
 	},
+}
+
+func printRecommendation(serviceName, clusterName string, reservation int64) {
+	fmt.Printf("Service: %s, Cluster: %s, Recommended Memory Reservation: %d\n", serviceName, clusterName, reservation)
 }
 
 func init() {

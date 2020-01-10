@@ -2,11 +2,13 @@ package lib
 
 import (
 	"log"
+	"regexp"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cloudwatch"
+	"github.com/aws/aws-sdk-go/service/ecs"
 )
 
 var (
@@ -14,6 +16,35 @@ var (
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 )
+
+func GetServices(clusterName string) []string {
+	var ecsService = ecs.New(sess)
+
+	input := &ecs.ListServicesInput{
+		Cluster: aws.String(clusterName),
+	}
+
+	var results []string
+
+	for {
+		output, err := ecsService.ListServices(input)
+
+		if err != nil {
+			log.Println(err)
+		}
+
+		for _, serviceArn := range output.ServiceArns {
+			var re = regexp.MustCompile(".*:service/")
+			results = append(results, re.ReplaceAllString(*serviceArn, ""))
+		}
+
+		input.NextToken = output.NextToken
+		if input.NextToken == nil {
+			break
+		}
+	}
+	return results
+}
 
 // EstimateReservation looks at your ECS service's historical memory utilization and recommends a memory reservation
 func EstimateReservation(serviceName, clusterName string) (reservation int64) {
