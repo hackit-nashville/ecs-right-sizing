@@ -3,6 +3,7 @@ package lib
 import (
 	"log"
 	"regexp"
+	"sort"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -43,6 +44,9 @@ func GetServices(clusterName string) []string {
 			break
 		}
 	}
+
+	sort.Strings(results)
+
 	return results
 }
 
