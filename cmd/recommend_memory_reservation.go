@@ -2,7 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	lib "hackit-ecs-right-sizing/lib"
+
+	lib "github.com/hackit-nashville/ecs-right-sizing/lib"
 
 	"github.com/spf13/cobra"
 )

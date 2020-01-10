@@ -1,7 +1,7 @@
 package main
 
 import (
-	"hackit-ecs-right-sizing/cmd"
+	"github.com/hackit-nashville/ecs-right-sizing/cmd"
 )
 
 // Version of cli. Overwritten during build
