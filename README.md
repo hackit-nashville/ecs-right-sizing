@@ -1,27 +1,20 @@
 # Hackit ECS Right-Sizing
+A simple package to give memory reservation recommendations for ECS Containers based on historical usage.
 
 ## Getting Started
 
-You need to turn on [CloudWatch Container Insights](https://console.aws.amazon.com/ecs/home?region=us-east-1#/settings).
-You can enable it with the command below:
-
+Turn on [CloudWatch Container Insights](https://console.aws.amazon.com/ecs/home?region=us-east-1#/settings).
+You can enable it with the command below. 
+**Note:** The metrics from Container Insights will only begin tracking after you enable them. Historical data will not be present and may skew recomendations until Container Insights has been enable for a few weeks or months.
+    # Turn on "Cloudwatch Container Insights"
     aws ecs update-cluster-settings \
         --cluster default \    
         --settings name=containerInsights,value=enabled
 
-## Data
-
-See data.json
-
-    aws cloudwatch get-metric-data --cli-input-json file://metrics.json > data.json
-
-## start.sh
-
-sh start.sh data interval
-Starts the python script. Prints values to console and creates a .csv file in relative directory.
+## Usage
+[![asciicast](https://asciinema.org/a/293397.svg)](https://asciinema.org/a/293397)
 
 ## RoadMap
 
-- Update `metricDataResultsToDailyView` to return recommendation: (MAX of []hours / .8)
+- Add verbose flag for a detailed report for each service in a cluster
 - Accept a parameter to recommend by weekday or daily
-- Write an option to iterate over all services in ECS and make a recommendation/report for each service
