@@ -9,8 +9,8 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "hackit-ecs-right-sizing",
-	Short: "hackit-ecs-right-sizing is used to right-size ECS services",
+	Use:   "ecs-right-sizing",
+	Short: "ecs-right-sizing is used to right-size ECS services",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
