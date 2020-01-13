@@ -6,6 +6,7 @@ A simple package to give memory reservation recommendations for ECS Containers b
 Turn on [CloudWatch Container Insights](https://console.aws.amazon.com/ecs/home?region=us-east-1#/settings).
 You can enable it with the command below. 
 **Note:** The metrics from Container Insights will only begin tracking after you enable them. Historical data will not be present and may skew recomendations until Container Insights has been enable for a few weeks or months.
+
     # Turn on "Cloudwatch Container Insights"
     aws ecs update-cluster-settings \
         --cluster default \    
