@@ -9,6 +9,12 @@ before:
 builds:
 - env:
   - CGO_ENABLED=0
+  goos:
+    - darwin
+    - windows
+    - linux
+  binary: ecs-right-sizing
+
 archives:
 - replacements:
     darwin: Darwin
